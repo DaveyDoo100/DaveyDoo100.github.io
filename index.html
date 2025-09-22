@@ -3,80 +3,108 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>David Shusterman</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+  <title>David Shusterman - Future in Pre Med</title>
   <style>
     body {
       font-family: 'Poppins', sans-serif;
+      background: url("https://www.toptal.com/designers/subtlepatterns/uploads/marble-pattern.png") repeat;
+      background-size: cover;
+      color: #f5f5f5;
       margin: 0;
       padding: 0;
-      background-color: #111; /* black theme */
-      color: #eee;
-      line-height: 1.7;
+      line-height: 1.8;
     }
     header {
-      background-color: #000;
-      padding: 3rem 1rem;
+      background: rgba(0, 0, 0, 0.8);
       text-align: center;
-      border-bottom: 2px solid #d4af37; /* gold accent */
+      padding: 3rem 1rem;
+      border-bottom: 3px solid #d4af37;
     }
     header h1 {
-      margin: 0;
       font-size: 3rem;
-      color: #d4af37; /* gold */
-      letter-spacing: 2px;
+      color: #d4af37;
+      margin: 0;
     }
     section {
-      max-width: 900px;
-      margin: 3rem auto;
-      padding: 1rem 2rem;
-      background-color: #1a1a1a;
+      background: rgba(0, 0, 0, 0.7);
+      margin: 2rem 8%;
+      padding: 2rem;
       border-radius: 12px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.6);
     }
     h2 {
-      color: #d4af37; /* gold */
-      margin-top: 0;
+      color: #d4af37;
+      border-left: 4px solid #d4af37;
+      padding-left: 10px;
+      margin-bottom: 1rem;
     }
-    p {
-      font-size: 1.1rem;
+    h3 {
+      color: #f5f5f5;
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+      border-bottom: 1px solid #333;
+      padding-bottom: 0.5rem;
     }
-    img {
-      max-width: 100%;
-      border-radius: 12px;
-      margin: 1rem 0;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.7);
+    ul {
+      margin: 0 0 1.5rem 2rem;
+    }
+    ul li {
+      margin-bottom: 0.6rem;
     }
     iframe {
-      width: 100%;
-      height: 400px;
+      display: block;
+      margin: 2rem auto;
+      max-width: 100%;
+      border: 3px solid #d4af37;
       border-radius: 12px;
-      border: 2px solid #d4af37;
-      margin-top: 1rem;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.7);
-    }
-    .easter-egg {
-      display: none;
-      text-align: center;
-      margin-top: 2rem;
-    }
-    .secret {
-      color: #d4af37;
-      cursor: pointer;
-      font-weight: bold;
-      border-bottom: 1px dashed #d4af37;
     }
     footer {
+      background: rgba(0, 0, 0, 0.85);
       text-align: center;
-      padding: 2rem;
-      margin-top: 3rem;
-      background-color: #000;
-      border-top: 2px solid #d4af37;
+      padding: 1rem;
+      border-top: 3px solid #d4af37;
       font-size: 0.9rem;
-      color: #aaa;
     }
-    footer span {
-      color: #d4af37;
+
+    /* Easter Egg Box */
+    #secret-box {
+      position: fixed;
+      bottom: 10px;
+      left: 10px;
+      width: 40px;
+      height: 40px;
+      opacity: 0; /* invisible */
+      cursor: pointer;
+      z-index: 100;
+    }
+
+    /* Game Overlay */
+    #game-container {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.95);
+      z-index: 200;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+    canvas {
+      background: #87ceeb;
+      border: 3px solid #d4af37;
+      border-radius: 12px;
+    }
+    #close-game {
+      margin-top: 1rem;
+      padding: 0.5rem 1.2rem;
+      background: #d4af37;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
     }
   </style>
 </head>
@@ -87,44 +115,185 @@
 
   <section>
     <h2>My Future Plans</h2>
-    <p>After high school, I want to <strong>study pre-med</strong> to prepare for a career in the medical field. I am motivated by the goal of improving people’s health, contributing to scientific research, and making a meaningful impact in communities. This path will be challenging, but I believe that with dedication and perseverance I can achieve my goals and make a difference in the world.</p>
+    <p>
+      After high school, I want to study pre-med. This path will allow me to pursue my dream of helping people, 
+      learning about biology and health, and preparing for a career in medicine. I know this journey will be 
+      challenging, but I am excited for the knowledge and skills I will gain along the way.
+    </p>
   </section>
 
   <section>
-    <h2>Unit 1: Communication & Technology</h2>
-    <p>In Unit 1, we learned vocabulary such as <em>network, digital footprint, upload, connection, and media</em>. These words describe the way people share ideas and interact online, which is essential in today’s connected world. By understanding these concepts, we can see how technology has changed the way we live, learn, and communicate with each other.</p>
-    <img src="https://images.unsplash.com/photo-1581090700227-4c4f50a69b9c" alt="Technology and communication">
-  </section>
+    <h2>Unit 1 & 2 Vocabulary</h2>
 
-  <section>
-    <h2>Unit 2: Health & Medicine</h2>
-    <p>In Unit 2, we studied terms like <em>diagnosis, prevention, treatment, symptoms, and research</em>. These words are key to understanding medicine and highlight the importance of science in improving health and saving lives. Learning this vocabulary also prepares us for real-world situations where health knowledge is important, both for personal well-being and for helping others.</p>
-    <img src="https://images.unsplash.com/photo-1580281657527-47d8f2f5b6b9" alt="Medical science">
+    <h3>Unit 1: Data</h3>
+    <ul>
+      <li><strong>Bit:</strong> A binary digit, either 0 or 1.</li>
+      <li><strong>Byte:</strong> A sequence of 8 bits.</li>
+      <li><strong>Roundoff:</strong> Error when not enough bits represent a number with precision.</li>
+      <li><strong>Analog Data:</strong> Values that change smoothly, like music or light.</li>
+      <li><strong>Lossless:</strong> Compression that preserves all data exactly.</li>
+      <li><strong>Lossy:</strong> Compression that discards some data permanently.</li>
+      <li><strong>Metadata:</strong> Data about data, such as file details.</li>
+    </ul>
+
+    <h3>Unit 2: Computer Systems and Networks</h3>
+    <ul>
+      <li><strong>Computing Device:</strong> Any device that runs a program, like a phone or computer.</li>
+      <li><strong>Computer Network:</strong> A group of connected devices exchanging data.</li>
+      <li><strong>Path:</strong> The series of connections between devices in a network.</li>
+      <li><strong>Protocol:</strong> Rules that define how systems communicate.</li>
+      <li><strong>Fault Tolerant:</strong> Keeps working even if some parts fail.</li>
+      <li><strong>Scalability:</strong> Ability of a system to grow or shrink as needed.</li>
+      <li><strong>Bandwidth:</strong> Maximum data transfer rate, measured in bits per second.</li>
+      <li><strong>URL:</strong> A readable web address, like www.example.com.</li>
+    </ul>
+
+    <h3>Internet Structure and Layers</h3>
+    <ul>
+      <li><strong>Physical Network:</strong> The hardware carrying internet signals.</li>
+      <li><strong>Internet Protocol (IP):</strong> Assigns addresses and routes data.</li>
+      <li><strong>TCP:</strong> Reliable, error-checked delivery of data packets.</li>
+      <li><strong>UDP:</strong> Faster but less reliable alternative to TCP.</li>
+      <li><strong>Packets:</strong> Small chunks of data messages are split into.</li>
+      <li><strong>Routers:</strong> Devices that forward data using the best path.</li>
+      <li><strong>DNS:</strong> Translates domain names into IP addresses.</li>
+      <li><strong>HTTP:</strong> Protocol for web pages and media.</li>
+      <li><strong>WWW:</strong> Linked system of web pages and media browsable online.</li>
+    </ul>
+
+    <h3>Key Concepts</h3>
+    <ul>
+      <li><strong>Message Delivery:</strong> Messages split into packets that may take different paths.</li>
+      <li><strong>Redundancy:</strong> Multiple pathways ensure reliability.</li>
+      <li><strong>IPv4:</strong> Uses 32-bit addresses (~4.3 billion unique addresses).</li>
+      <li><strong>IPv6:</strong> Adds 16 more bits, expanding address space hugely.</li>
+    </ul>
   </section>
 
   <section>
     <h2>How the Internet Works</h2>
-    <p>This video gives a clear explanation of how the internet works, from connections to networks and communication protocols. It shows how devices interact across the globe, making it possible for us to send messages, stream videos, and search for information in seconds. Understanding how the internet functions helps us appreciate the complexity behind something we often take for granted every day.</p>
-    <iframe src="https://www.youtube.com/embed/7_LPdttKXPc" title="How the Internet Works"></iframe>
-  </section>
-
-  <section>
-    <h2>Bonus</h2>
-    <p>Click the <span class="secret">secret word</span> to reveal a surprise. This Easter egg is hidden just for fun and adds a playful touch to the page. If you find it, you’ll discover something unexpected and lighthearted, which makes the site more interactive.</p>
-    <div class="easter-egg">
-      <img src="https://placekitten.com/400/300" alt="Hidden Cat">
-      <p>You found the Easter egg 🐱 Gold star for you! Hidden features like this remind us that learning can be fun and full of surprises.</p>
-    </div>
+    <p>
+      The internet is a network of networks that connects billions of devices across the world. 
+      Messages are broken into smaller packets, sent through multiple paths, and reassembled 
+      when they reach the destination. This system makes the internet fault tolerant, scalable, 
+      and powerful enough to handle enormous amounts of data.
+    </p>
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/7_LPdttKXPc" 
+      title="How the Internet Works" frameborder="0" allowfullscreen>
+    </iframe>
   </section>
 
   <footer>
-    <p>© 2025 <span>David Shusterman</span> | Built with ❤️ for GitHub Pages</p>
+    <p>© 2025 David Shusterman</p>
   </footer>
 
+  <!-- Invisible Easter Egg Trigger -->
+  <div id="secret-box"></div>
+
+  <!-- Game Overlay -->
+  <div id="game-container">
+    <canvas id="gameCanvas" width="400" height="500"></canvas>
+    <button id="close-game">Close Game</button>
+  </div>
+
   <script>
-    document.querySelector('.secret').addEventListener('click', function() {
-      document.querySelector('.easter-egg').style.display = 'block';
+    const secretBox = document.getElementById("secret-box");
+    const gameContainer = document.getElementById("game-container");
+    const canvas = document.getElementById("gameCanvas");
+    const ctx = canvas.getContext("2d");
+    const closeBtn = document.getElementById("close-game");
+
+    let catImg = new Image();
+    catImg.src = "https://i.ibb.co/4T9rQKq/cat.png"; // transparent cat image
+
+    let cat, gravity, lift, velocity, pipes, score, gameLoop;
+
+    function startGame() {
+      gameContainer.style.display = "flex";
+      cat = { x: 50, y: 200, width: 40, height: 40 };
+      gravity = 0.6;
+      lift = -12;
+      velocity = 0;
+      pipes = [];
+      score = 0;
+      if (gameLoop) clearInterval(gameLoop);
+      gameLoop = setInterval(update, 20);
+    }
+
+    function endGame() {
+      clearInterval(gameLoop);
+      alert("Game Over! Your score: " + score);
+      gameContainer.style.display = "none";
+    }
+
+    function drawCat() {
+      ctx.drawImage(catImg, cat.x, cat.y, cat.width, cat.height);
+    }
+
+    function keyPressed(e) {
+      if (e.code === "Space") {
+        velocity += lift;
+      }
+    }
+
+    function drawPipes() {
+      for (let i = 0; i < pipes.length; i++) {
+        let p = pipes[i];
+        ctx.fillStyle = "#228B22";
+        ctx.fillRect(p.x, 0, 40, p.top);
+        ctx.fillRect(p.x, p.top + p.gap, 40, canvas.height - p.top - p.gap);
+      }
+    }
+
+    function update() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      velocity += gravity;
+      cat.y += velocity;
+
+      if (cat.y + cat.height > canvas.height || cat.y < 0) {
+        endGame();
+      }
+
+      if (Math.random() < 0.02) {
+        let top = Math.random() * (canvas.height / 2);
+        let gap = 120;
+        pipes.push({ x: canvas.width, top: top, gap: gap });
+      }
+
+      for (let i = 0; i < pipes.length; i++) {
+        let p = pipes[i];
+        p.x -= 2;
+
+        if (
+          cat.x + cat.width > p.x &&
+          cat.x < p.x + 40 &&
+          (cat.y < p.top || cat.y + cat.height > p.top + p.gap)
+        ) {
+          endGame();
+        }
+
+        if (p.x + 40 === cat.x) {
+          score++;
+        }
+      }
+
+      pipes = pipes.filter(p => p.x > -40);
+
+      drawPipes();
+      drawCat();
+
+      ctx.fillStyle = "#000";
+      ctx.font = "20px Poppins";
+      ctx.fillText("Score: " + score, 10, 30);
+    }
+
+    secretBox.addEventListener("click", startGame);
+    closeBtn.addEventListener("click", () => {
+      clearInterval(gameLoop);
+      gameContainer.style.display = "none";
     });
+    window.addEventListener("keydown", keyPressed);
   </script>
 </body>
 </html>
