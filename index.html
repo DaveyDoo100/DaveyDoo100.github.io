@@ -1,299 +1,130 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>David Shusterman - Future in Pre Med</title>
-  <style>
-    body {
-      font-family: 'Poppins', sans-serif;
-      background: url("https://i.ibb.co/9vmTbYP/black-gold-marble.jpg") no-repeat center center fixed;
-      background-size: cover;
-      color: #f5f5f5;
-      margin: 0;
-      padding: 0;
-      line-height: 1.8;
+<script>
+  const secretBox = document.getElementById("secret-box");
+  const gameContainer = document.getElementById("game-container");
+  const closeGameBtn = document.getElementById("close-game");
+  const canvas = document.getElementById("gameCanvas");
+  const ctx = canvas.getContext("2d");
+
+  let gameInterval, gravity, cat, pipes, score, gameOver;
+  const catImg = new Image();
+  catImg.src = "https://i.ibb.co/khgFL2j/cat.png"; // Cat sprite
+
+  const pipeMarble = new Image();
+  pipeMarble.src = "https://i.ibb.co/9vmTbYP/black-gold-marble.jpg"; // Marble texture
+
+  function resetGame() {
+    gravity = 0.4;
+    score = 0;
+    gameOver = false;
+    cat = { x: 50, y: 300, width: 40, height: 40, velocity: 0 };
+    pipes = [];
+  }
+
+  function startGame() {
+    resetGame();
+    gameInterval = setInterval(updateGame, 20);
+  }
+
+  function endGame() {
+    clearInterval(gameInterval);
+    ctx.fillStyle = "rgba(0,0,0,0.7)";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = "#d4af37";
+    ctx.font = "36px Poppins";
+    ctx.fillText("Game Over", canvas.width / 2 - 90, canvas.height / 2);
+    ctx.font = "20px Poppins";
+    ctx.fillText("Score: " + score, canvas.width / 2 - 40, canvas.height / 2 + 40);
+    gameOver = true;
+  }
+
+  function drawCat() {
+    ctx.drawImage(catImg, cat.x, cat.y, cat.width, cat.height);
+  }
+
+  function drawPipes() {
+    for (let pipe of pipes) {
+      // Top pipe
+      ctx.drawImage(pipeMarble, pipe.x, 0, pipe.width, pipe.top);
+      // Bottom pipe
+      ctx.drawImage(pipeMarble, pipe.x, canvas.height - pipe.bottom, pipe.width, pipe.bottom);
     }
-    header {
-      background: rgba(0, 0, 0, 0.8);
-      text-align: center;
-      padding: 3rem 1rem;
-      border-bottom: 3px solid #d4af37;
-    }
-    header h1 {
-      font-size: 3rem;
-      color: #d4af37;
-      margin: 0;
-    }
-    section {
-      background: rgba(0, 0, 0, 0.7);
-      margin: 2rem 8%;
-      padding: 2rem;
-      border-radius: 12px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.6);
-    }
-    h2 {
-      color: #d4af37;
-      border-left: 4px solid #d4af37;
-      padding-left: 10px;
-      margin-bottom: 1rem;
-    }
-    h3 {
-      color: #f5f5f5;
-      margin-top: 2rem;
-      margin-bottom: 1rem;
-      border-bottom: 1px solid #333;
-      padding-bottom: 0.5rem;
-    }
-    ul {
-      margin: 0 0 1.5rem 2rem;
-    }
-    ul li {
-      margin-bottom: 0.6rem;
-    }
-    iframe {
-      display: block;
-      margin: 2rem auto;
-      max-width: 100%;
-      border: 3px solid #d4af37;
-      border-radius: 12px;
-    }
-    footer {
-      background: rgba(0, 0, 0, 0.85);
-      text-align: center;
-      padding: 1rem;
-      border-top: 3px solid #d4af37;
-      font-size: 0.9rem;
+  }
+
+  function updateGame() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Gravity
+    cat.velocity += gravity;
+    cat.y += cat.velocity;
+
+    // Collision with floor/ceiling
+    if (cat.y + cat.height > canvas.height || cat.y < 0) {
+      endGame();
     }
 
-    /* Easter Egg Box */
-    #secret-box {
-      position: fixed;
-      bottom: 10px;
-      left: 10px;
-      width: 40px;
-      height: 40px;
-      opacity: 0; /* invisible */
-      cursor: pointer;
-      z-index: 100;
+    // Generate pipes
+    if (pipes.length === 0 || pipes[pipes.length - 1].x < 250) {
+      let topHeight = Math.random() * (canvas.height - 200) + 50;
+      let gap = 140;
+      pipes.push({
+        x: canvas.width,
+        width: 60,
+        top: topHeight,
+        bottom: canvas.height - topHeight - gap
+      });
     }
 
-    /* Game Overlay */
-    #game-container {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.95);
-      z-index: 200;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-    }
-    canvas {
-      background: #87ceeb;
-      border: 3px solid #d4af37;
-      border-radius: 12px;
-    }
-    #close-game {
-      margin-top: 1rem;
-      padding: 0.5rem 1.2rem;
-      background: #d4af37;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-weight: bold;
-    }
-  </style>
-</head>
-<body>
-  <header>
-    <h1>David Shusterman</h1>
-  </header>
+    for (let i = 0; i < pipes.length; i++) {
+      let pipe = pipes[i];
+      pipe.x -= 3;
 
-  <section>
-    <h2>My Future Plans</h2>
-    <p>
-      After high school, I want to study pre-med. This path will allow me to pursue my dream of helping people, 
-      learning about biology and health, and preparing for a career in medicine. I know this journey will be 
-      challenging, but I am excited for the knowledge and skills I will gain along the way.
-    </p>
-  </section>
-
-  <section>
-    <h2>Unit 1 & 2 Vocabulary</h2>
-
-    <h3>Unit 1: Data</h3>
-    <ul>
-      <li><strong>Bit:</strong> A binary digit, either 0 or 1.</li>
-      <li><strong>Byte:</strong> A sequence of 8 bits.</li>
-      <li><strong>Roundoff:</strong> Error when not enough bits represent a number with precision.</li>
-      <li><strong>Analog Data:</strong> Values that change smoothly, like music or light.</li>
-      <li><strong>Lossless:</strong> Compression that preserves all data exactly.</li>
-      <li><strong>Lossy:</strong> Compression that discards some data permanently.</li>
-      <li><strong>Metadata:</strong> Data about data, such as file details.</li>
-    </ul>
-
-    <h3>Unit 2: Computer Systems and Networks</h3>
-    <ul>
-      <li><strong>Computing Device:</strong> Any device that runs a program, like a phone or computer.</li>
-      <li><strong>Computer Network:</strong> A group of connected devices exchanging data.</li>
-      <li><strong>Path:</strong> The series of connections between devices in a network.</li>
-      <li><strong>Protocol:</strong> Rules that define how systems communicate.</li>
-      <li><strong>Fault Tolerant:</strong> Keeps working even if some parts fail.</li>
-      <li><strong>Scalability:</strong> Ability of a system to grow or shrink as needed.</li>
-      <li><strong>Bandwidth:</strong> Maximum data transfer rate, measured in bits per second.</li>
-      <li><strong>URL:</strong> A readable web address, like www.example.com.</li>
-    </ul>
-
-    <h3>Internet Structure and Layers</h3>
-    <ul>
-      <li><strong>Physical Network:</strong> The hardware carrying internet signals.</li>
-      <li><strong>Internet Protocol (IP):</strong> Assigns addresses and routes data.</li>
-      <li><strong>TCP:</strong> Reliable, error-checked delivery of data packets.</li>
-      <li><strong>UDP:</strong> Faster but less reliable alternative to TCP.</li>
-      <li><strong>Packets:</strong> Small chunks of data messages are split into.</li>
-      <li><strong>Routers:</strong> Devices that forward data using the best path.</li>
-      <li><strong>DNS:</strong> Translates domain names into IP addresses.</li>
-      <li><strong>HTTP:</strong> Protocol for web pages and media.</li>
-      <li><strong>WWW:</strong> Linked system of web pages and media browsable online.</li>
-    </ul>
-
-    <h3>Key Concepts</h3>
-    <ul>
-      <li><strong>Message Delivery:</strong> Messages split into packets that may take different paths.</li>
-      <li><strong>Redundancy:</strong> Multiple pathways ensure reliability.</li>
-      <li><strong>IPv4:</strong> Uses 32-bit addresses (~4.3 billion unique addresses).</li>
-      <li><strong>IPv6:</strong> Adds 16 more bits, expanding address space hugely.</li>
-    </ul>
-  </section>
-
-  <section>
-    <h2>How the Internet Works</h2>
-    <p>
-      The internet is a network of networks that connects billions of devices across the world. 
-      Messages are broken into smaller packets, sent through multiple paths, and reassembled 
-      when they reach the destination. This system makes the internet fault tolerant, scalable, 
-      and powerful enough to handle enormous amounts of data.
-    </p>
-    <iframe width="560" height="315" src="https://www.youtube.com/embed/7_LPdttKXPc" 
-      title="How the Internet Works" frameborder="0" allowfullscreen>
-    </iframe>
-  </section>
-
-  <footer>
-    <p>© 2025 David Shusterman</p>
-  </footer>
-
-  <!-- Invisible Easter Egg Trigger -->
-  <div id="secret-box"></div>
-
-  <!-- Game Overlay -->
-  <div id="game-container">
-    <canvas id="gameCanvas" width="400" height="500"></canvas>
-    <button id="close-game">Close Game</button>
-  </div>
-
-  <script>
-    const secretBox = document.getElementById("secret-box");
-    const gameContainer = document.getElementById("game-container");
-    const canvas = document.getElementById("gameCanvas");
-    const ctx = canvas.getContext("2d");
-    const closeBtn = document.getElementById("close-game");
-
-    let catImg = new Image();
-    catImg.src = "https://i.ibb.co/4T9rQKq/cat.png"; // transparent cat image
-
-    let cat, gravity, lift, velocity, pipes, score, gameLoop;
-
-    function startGame() {
-      gameContainer.style.display = "flex";
-      cat = { x: 50, y: 200, width: 40, height: 40 };
-      gravity = 0.6;
-      lift = -12;
-      velocity = 0;
-      pipes = [];
-      score = 0;
-      if (gameLoop) clearInterval(gameLoop);
-      gameLoop = setInterval(update, 20);
-    }
-
-    function endGame() {
-      clearInterval(gameLoop);
-      alert("Game Over! Your score: " + score);
-      gameContainer.style.display = "none";
-    }
-
-    function drawCat() {
-      ctx.drawImage(catImg, cat.x, cat.y, cat.width, cat.height);
-    }
-
-    function keyPressed(e) {
-      if (e.code === "Space") {
-        velocity += lift;
-      }
-    }
-
-    function drawPipes() {
-      for (let i = 0; i < pipes.length; i++) {
-        let p = pipes[i];
-        ctx.fillStyle = "#228B22";
-        ctx.fillRect(p.x, 0, 40, p.top);
-        ctx.fillRect(p.x, p.top + p.gap, 40, canvas.height - p.top - p.gap);
-      }
-    }
-
-    function update() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      velocity += gravity;
-      cat.y += velocity;
-
-      if (cat.y + cat.height > canvas.height || cat.y < 0) {
+      // Collision detection
+      if (
+        cat.x < pipe.x + pipe.width &&
+        cat.x + cat.width > pipe.x &&
+        (cat.y < pipe.top || cat.y + cat.height > canvas.height - pipe.bottom)
+      ) {
         endGame();
       }
 
-      if (Math.random() < 0.02) {
-        let top = Math.random() * (canvas.height / 2);
-        let gap = 120;
-        pipes.push({ x: canvas.width, top: top, gap: gap });
+      // Score
+      if (!pipe.passed && pipe.x + pipe.width < cat.x) {
+        score++;
+        pipe.passed = true;
       }
-
-      for (let i = 0; i < pipes.length; i++) {
-        let p = pipes[i];
-        p.x -= 2;
-
-        if (
-          cat.x + cat.width > p.x &&
-          cat.x < p.x + 40 &&
-          (cat.y < p.top || cat.y + cat.height > p.top + p.gap)
-        ) {
-          endGame();
-        }
-
-        if (p.x + 40 === cat.x) {
-          score++;
-        }
-      }
-
-      pipes = pipes.filter(p => p.x > -40);
-
-      drawPipes();
-      drawCat();
-
-      ctx.fillStyle = "#000";
-      ctx.font = "20px Poppins";
-      ctx.fillText("Score: " + score, 10, 30);
     }
 
-    secretBox.addEventListener("click", startGame);
-    closeBtn.addEventListener("click", () => {
-      clearInterval(gameLoop);
-      gameContainer.style.display = "none";
-    });
-    window.addEventListener("keydown", keyPressed);
-  </script>
-</body>
-</html>
+    // Remove off-screen pipes
+    pipes = pipes.filter(pipe => pipe.x + pipe.width > 0);
+
+    // Draw
+    drawCat();
+    drawPipes();
+
+    ctx.fillStyle = "#fff";
+    ctx.font = "20px Poppins";
+    ctx.fillText("Score: " + score, 10, 30);
+  }
+
+  // Controls
+  function jump() {
+    if (!gameOver) {
+      cat.velocity = -7;
+    }
+  }
+  document.addEventListener("keydown", (e) => {
+    if (e.code === "Space") jump();
+  });
+  canvas.addEventListener("click", jump);
+
+  // Show/Hide game
+  secretBox.addEventListener("click", () => {
+    gameContainer.style.display = "flex";
+    startGame();
+  });
+
+  closeGameBtn.addEventListener("click", () => {
+    gameContainer.style.display = "none";
+    clearInterval(gameInterval);
+  });
+</script>
